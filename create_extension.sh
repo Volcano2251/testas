@@ -5,7 +5,7 @@ BASE_DIR="Mano-AI-Pletinys"
 
 mkdir -p "$BASE_DIR/icons"
 
-cat <<'EOM' > "$BASE_DIR/manifest.json"
+cat <<'EOF' > "$BASE_DIR/manifest.json"
 {
   "manifest_version": 3,
   "name": "AI Turinio Asistentas",
@@ -16,27 +16,27 @@ cat <<'EOM' > "$BASE_DIR/manifest.json"
   "action": { "default_popup": "popup.html", "default_icon": { "48": "icons/icon48.png" } },
   "icons": { "48": "icons/icon48.png", "128": "icons/icon128.png" }
 }
-EOM
+EOF
 
-cat <<'EOM' > "$BASE_DIR/popup.html"
+cat <<'EOF' > "$BASE_DIR/popup.html"
 <!DOCTYPE html><html lang="lt"><head><meta charset="UTF-8"><title>AI Turinio Asistentas</title><link rel="stylesheet" href="popup.css"></head><body><div class="container"><h1>AI Asistentas</h1><p>Išsaugokite pagrindinį puslapio turinį.</p><button id="save-md-button">Išsaugoti kaip Markdown</button></div><script src="popup.js"></script></body></html>
-EOM
+EOF
 
-cat <<'EOM' > "$BASE_DIR/popup.css"
+cat <<'EOF' > "$BASE_DIR/popup.css"
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; width: 250px; padding: 10px; margin: 0; background-color: #f9f9f9; }
 .container { text-align: center; } h1 { font-size: 18px; color: #333; margin-top: 0; } p { font-size: 14px; color: #666; }
 #save-md-button { background-color: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; transition: background-color 0.2s; }
 #save-md-button:hover { background-color: #0056b3; }
-EOM
+EOF
 
-cat <<'EOM' > "$BASE_DIR/popup.js"
+cat <<'EOF' > "$BASE_DIR/popup.js"
 document.addEventListener('DOMContentLoaded', () => {
   const saveButton = document.getElementById('save-md-button');
   saveButton.addEventListener('click', () => { chrome.runtime.sendMessage({ action: "saveAsMarkdown" }); window.close(); });
 });
-EOM
+EOF
 
-cat <<'EOM' > "$BASE_DIR/service-worker.js"
+cat <<'EOF' > "$BASE_DIR/service-worker.js"
 importScripts('Readability.js', 'turndown.js');
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "saveAsMarkdown") {
@@ -62,7 +62,7 @@ function saveToFile(content, title) {
   const url = URL.createObjectURL(blob);
   chrome.downloads.download({ url: url, filename: filename, saveAs: false });
 }
-EOM
+EOF
 
 curl -L -o "$BASE_DIR/Readability.js" "https://raw.githubusercontent.com/mozilla/readability/master/Readability.js"
 curl -L -o "$BASE_DIR/turndown.js" "https://unpkg.com/turndown/dist/turndown.js"
